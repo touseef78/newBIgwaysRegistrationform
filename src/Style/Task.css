@@ -1,0 +1,270 @@
+.container {
+  background-color: black;
+}
+/* .container h2 {
+  color: #fff;
+} */
+
+.container p {
+  color: #fff;
+}
+.heading {
+  color: #fff;
+  text-align: center;
+  /* margin-top: 20px; */
+  top: 60px !important;
+  padding: 3rem;
+}
+.bg-color {
+  background-color: #000;
+}
+.bg-color-modal {
+  background-color: #fff;
+  border-radius: 15px;
+}
+
+.first h1 {
+  color: #fff;
+  margin-top: 40px;
+  font-size: 30px;
+  /* margin-left: 12rem; */
+  text-align: center;
+  /* font-family: Arial, Helvetica, sans-serif; */
+}
+.first p {
+  text-align: center;
+  color: #fff;
+  margin-top: 20px;
+  font-size: 16px;
+  /* margin-left: 12rem; */
+}
+
+.secondmodal h1 {
+  /* color: #fff; */
+  color: #000;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 30px;
+  text-align: center;
+  /* font-family: Arial, Helvetica, sans-serif; */
+}
+/* Moday Body code  */
+.modal-header {
+  /* background-color: #000; */
+  background-color: #fff;
+  /* color: #fff; */
+  color: #000;
+}
+.first-modal-button {
+  margin-bottom: 3rem;
+}
+.second-modal-button button {
+  margin-bottom: 3rem;
+}
+.form-container-main {
+  width: 50%;
+  margin: auto;
+  /* border: 2px solid black; */
+  /* padding: 2rem 4rem; */
+}
+
+.numeric-button {
+  display: inline-block;
+  font-size: 16px;
+  text-align: center;
+  width: 100px;
+  padding: 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+#numericButton {
+  color: #fff;
+}
+
+.image {
+  width: 50%;
+  height: auto;
+}
+
+.image img {
+  width: 75%;
+  height: auto;
+  border: 2px solid black;
+  border-radius: 15px;
+}
+/* dropdown code  */
+
+.custom-dropdown {
+  position: relative;
+}
+
+.custom-dropdown select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  padding-right: 30px; /* Adjust as needed */
+}
+
+.custom-dropdown select::-ms-expand {
+  display: none;
+}
+.numeric_box label {
+  color: #fff;
+}
+/* model code here  */
+.second {
+  text-align: center;
+  /* background-color: #000; */
+  background-color: #fff;
+}
+.second h3 {
+  /* text-align: center; */
+  /* color: #fff; */
+  color: #000;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.estimate {
+  margin-top: 2rem;
+}
+#map {
+  height: auto;
+  width: 100%;
+}
+.estimate h5 {
+  /* color: #fff; */
+  color: #000;
+}
+.estimate p {
+  /* color: #fff; */
+  color: #000;
+}
+.first-modal-body {
+  /* background-color: #000; */
+  background-color: #fff;
+  border-radius: 15px;
+}
+.payable {
+  text-align: center;
+  background-color: #fff;
+  color: #000;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.payable h4 {
+  margin-bottom: 20px;
+}
+.payable p {
+  margin-bottom: 20px;
+}
+.message p {
+  text-align: center;
+  padding: 20px;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 18px;
+}
+
+.third-modal-body {
+  /* background-color: #000; */
+  background-color: #fff;
+  border-radius: 15px;
+}
+/* loaction icon code here  */
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon input[type="text"] {
+  padding-right: 30px; /* Adjust this value according to your icon size */
+}
+
+.input-with-icon i {
+  position: absolute;
+  right: 15px; /* Adjust this value according to your icon position */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.hide {
+  display: none;
+}
+/* numeric box code here  */
+.numeric-box {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  cursor: pointer;
+}
+
+.numeric-input {
+  width: 50px; /* Adjust as needed */
+  text-align: center;
+  color: white;
+  background-color: black;
+  border: none;
+}
+
+.negative-sign,
+.positive-sign {
+  padding: 0 5px;
+  color: white;
+  font-weight: bold;
+}
+.five p {
+  display: flex;
+  align-items: center;
+  color: #fff;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+/* Dropdown code here  */
+
+/* Google map api code here  */
+
+@media screen and (max-width: 768px) {
+  .rate {
+    font-size: 20px; /* Adjust font size for smaller screens */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .image {
+    /* display: none; */
+    visibility: hidden;
+  }
+  .form-control {
+    margin-bottom: 20px;
+  }
+  .five p {
+    text-align: center;
+    display: block;
+  }
+}
+
+@media only screen and (max-width: 772px) {
+  .first {
+    text-align: center;
+    margin-right: 72px;
+  }
+}
+.map-container {
+  position: absolute;
+  z-index: 9999;
+  background: grey;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.small-input {
+  width: 50px; /* Adjust the width as needed */
+  /* You can also adjust height, padding, font-size, etc. */
+}

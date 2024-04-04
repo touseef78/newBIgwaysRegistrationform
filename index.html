@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- map api link  -->
+
+    <title>Vite + Vue</title>
+  </head>
+  <body>
+    <div id="app">
+      <Task />
+    </div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRL4y2_cSzAcP0bedr-67CkG1kifDKYfg&libraries=places"></script>
+    <script type="module" src="/src/main.js">
+             import { createApp } from 'https://cdn.skypack.dev/vue';
+             import App from './App.vue'
+            // import MapComponent from './MapComponent.vue';
+
+            const app = createApp(App);
+      app.use(VueGoogleMaps, {
+        load: {
+          key: 'AIzaSyDRL4y2_cSzAcP0bedr-67CkG1kifDKYfg',
+        },
+      }).mount('#app');
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <!-- <script type="text/javascript">
+      new Vue({
+        el: "#app",
+        data: {
+          numericValue: 0,
+        },
+        methods: {
+          handleInput(event) {
+            // Ensure the value is a valid number
+            const value = parseFloat(event.target.value);
+
+            // If value is NaN, set it to 0
+            if (isNaN(value)) {
+              this.numericValue = 0;
+            } else {
+              this.numericValue = value;
+            }
+          },
+        },
+      });
+    </script> -->
+    <script>
+      let numericValue = 0; // Initial value
+
+      function increment() {
+        numericValue++;
+        document.getElementById("numericValue").textContent = numericValue;
+      }
+
+      function decrement() {
+        if (numericValue > 0) {
+          numericValue--;
+          document.getElementById("numericValue").textContent = numericValue;
+        }
+      }
+    </script>
+    <!-- popup code here  -->
+  </body>
+</html>
