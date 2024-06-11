@@ -8,6 +8,10 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <!-- map api link  -->
@@ -18,6 +22,12 @@
     <div id="app">
       <Task />
     </div>
+    <script src="https://unpkg.com/vue-multiselect"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/vue-multiselect/dist/vue-multiselect.min.css"
+    />
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRL4y2_cSzAcP0bedr-67CkG1kifDKYfg&libraries=places"></script>
     <script type="module" src="/src/main.js">
              import { createApp } from 'https://cdn.skypack.dev/vue';
@@ -33,27 +43,6 @@
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
 
-    <!-- <script type="text/javascript">
-      new Vue({
-        el: "#app",
-        data: {
-          numericValue: 0,
-        },
-        methods: {
-          handleInput(event) {
-            // Ensure the value is a valid number
-            const value = parseFloat(event.target.value);
-
-            // If value is NaN, set it to 0
-            if (isNaN(value)) {
-              this.numericValue = 0;
-            } else {
-              this.numericValue = value;
-            }
-          },
-        },
-      });
-    </script> -->
     <script>
       let numericValue = 1; // Initial value
 

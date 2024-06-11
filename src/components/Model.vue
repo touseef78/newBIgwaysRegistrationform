@@ -1,4 +1,6 @@
 <script>
+// import Multiselect from 'vue-multiselect'
+import Multiselect from 'vue-multiselect';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "../Style/Task.css"
@@ -16,6 +18,8 @@ export default {
         cartype: String,
         vehicleName: String,
         vehiclecharge: String,
+        pricePublic: String,
+        selectedSchoolName: String,
         drop_latitude: String,
         drop_longitude: String,
         picup_latitude: String,
@@ -25,8 +29,21 @@ export default {
         distance: {
             type: Number,
             required: true
+        },
+        dropoff_time: String,
+        pickup_time: String,
+        zone_id: String,
+        school_id: String,
+        isPublic: {
+            type: Boolean,
+            default: false
         }
+
+
+
+
     },
+
     computed: {
         price() {
             // You can calculate the price based on the distance and other factors
@@ -39,27 +56,80 @@ export default {
     },
     components: {
         'qrcode-vue': VueQrcode,
+        Multiselect,
 
     },
 
     data() {
         return {
-            downloadLink: 'https://yourappdownloadlink.com'
+            downloadLink: 'https://yourappdownloadlink.com',
+            highlightedIndex: -1, // initialize highlighted index
+            city: '',
+            selectedCity: null,
+            // Variable to store the selected city
+            filteredCities: [], // Array to store filtered cities based on user input
+            cities: [
+                'Lahore', 'Islamabad', 'Multan', 'Sialkot', 'Rawalpindi',
+                'Faisalabad', 'Gujranwala', 'Bahawalpur', 'Sargodha', 'Sheikhupura',
+                'Gujrat', 'Jhang', 'Sahiwal', 'Okara', 'Rahim Yar Khan',
+                'Muzaffargarh', 'Khanewal'
+            ],
+            emailAlreadyExistsError: false,
+
 
         }
     },
 
     methods: {
+        // Method to filter cities based on user input
+        filterCities() {
+            if (!this.city) {
+                this.filteredCities = [];
+                console.log(filterCities)
+                return;
+
+            }
+            this.filteredCities = this.cities.filter(city =>
+                city.toLowerCase().includes(this.city.toLowerCase())
+            );
+        },
+        // Method to select a city from the filtered list
+        selectCity(city) {
+            this.selectedCity = city;
+            this.city = city; // Assign the selected city to the input field
+            this.filteredCities = []; // Clear the filtered list
+            this.highlightedIndex = -1;
+        },
+        moveUp() {
+            if (this.highlightedIndex > 0) {
+                this.highlightedIndex--;
+            }
+        },
+        moveDown() {
+            if (this.highlightedIndex < this.filteredCities.length - 1) {
+                this.highlightedIndex++;
+            }
+        },
+        // selectHighlightedCity() {
+        //     if (this.highlightedIndex !== -1) {
+        //         this.selectCity(this.filteredCities[this.highlightedIndex]);
+        //     }
+        // },
+        selectHighlightedCity() {
+            if (this.highlightedIndex >= 0 && this.highlightedIndex < this.filteredCities.length) {
+                this.selectCity(this.filteredCities[this.highlightedIndex]);
+            } else if (this.city) {
+                // If the user presses Enter without using the dropdown, consider the current input value as selected
+                this.selectedCity = this.city;
+            }
+        },
+
         secondModel() {
             // alert('second time');
             $('#oneModal').modal('hide');
             $('#secondModal').modal('show');
         },
-        // anotherModel() {
-        //     // alert('3rd time');
-        //     $('#secondModal').modal('hide');
-        //     $('#threeModal').modal('show');
-        // },
+
         async anotherModel() {
             try {
                 // Prepare the request data
@@ -68,18 +138,24 @@ export default {
                     phone_number: this.mobile_number,
                     city: this.city,
                     email: this.email,
-                    amount: this.price,
+                    amount: this.isPublic ? this.pricePublic : this.price, // Use pricePublic if isPublic is true, else use price
                     vehicle_id: this.cartype,
                     pickup_location: this.origin,
-                    drop_location: this.destination,
+                    // drop_location: this.destination,
+                    // drop_location: this.selectedSchoolName,
                     total_students: this.numericValue,
-
+                    drop_location: this.isPublic ? this.selectedSchoolName : this.destination,
                     pickup_latitude: this.picup_latitude,
                     pickup_longitude: this.picup_longitude,
 
                     drop_latitude: this.drop_latitude,
                     drop_longitude: this.drop_longitude,
-                    type: "parents"
+                    type: "parents",
+                    pickup_time: this.pickup_time,
+                    dropoff_time: this.dropoff_time,
+                    zone_id: this.zone_id,
+                    school_id: this.school_id,
+                    request_type: this.isPublic ? 'public' : 'private'  // Set request_type based on isPublic
                 };
 
                 // Make the API request to save data
@@ -88,16 +164,24 @@ export default {
                 // Handle the response
                 console.log('Data saved:', response.data);
 
+
+                this.emailAlreadyExistsError = false;
+
                 // Show the third modal
                 $('#secondModal').modal('hide');
                 $('#threeModal').modal('show');
             } catch (error) {
                 console.error('Error saving data:', error);
-                // Handle error
+                if (error.response && error.response.data && error.response.data.message === "Email already exist") {
+                    this.emailAlreadyExistsError = true;
+                } else {
+
+                }
             }
-            $('#secondModal').modal('hide');
-            $('#threeModal').modal('show');
+
         },
+
+
         downloadApp() {
             // Implement download logic here
             // For example, redirect to the download link
@@ -131,6 +215,8 @@ export default {
                                     <div class="detail"><strong>Drop Off:</strong> {{ destination }}</div>
                                     <div class="detail"><strong>Car Type: </strong>{{ vehicleType }}</div>
                                     <div class="detail"><strong>Distance:</strong> {{ distance }} km</div>
+
+
                                 </div>
 
                                 <!-- <button class="btn btn-primary" type="submit">Confirm Booking</button> -->
@@ -190,21 +276,52 @@ export default {
                                             </div>
                                         </div>
                                         <br />
-                                        <div className="">
+                                        <!-- <div className="">
                                             <input type="city" placeholder="Enter the city" className="form-control"
                                                 v-model="city" required />
                                             <div class="invalid-feedback">
                                                 This field must be filled.
                                             </div>
+                                        </div> -->
+
+                                        <!-- valid code end  -->
+
+                                        <div class="">
+                                            <!-- other form fields -->
+                                            <div class="position-relative">
+                                                <input type="text" placeholder="Enter the city" class="form-control"
+                                                    v-model="city" @input="filterCities" required
+                                                    @keydown.down.prevent="moveDown" @keydown.up.prevent="moveUp"
+                                                    @keydown.enter.prevent="selectHighlightedCity" />
+                                                <ul class="dropdown-menu" v-if="filteredCities.length > 0">
+                                                    <li v-for="(city, index) in filteredCities" :key="index"
+                                                        :class="{ 'highlighted': index === highlightedIndex }"
+                                                        @click="selectCity(city)">
+                                                        {{ city }}
+                                                    </li>
+                                                </ul>
+                                                <div class="invalid-feedback" v-if="!selectedCity">
+                                                    This field must be filled.
+                                                </div>
+                                            </div>
                                         </div>
+                                        <!-- <div class="detail"><strong>price:</strong> {{ pricePublic }}</div>
+                                        <div class="detail"><strong>Drop:</strong> {{ selectedSchoolName }}</div> -->
+
+
                                         <br />
-                                        <div className="">
-                                            <input type="email" placeholder="Enter the email" className="form-control"
+                                        <div class="">
+                                            <input type="email" placeholder="Enter the email" class="form-control"
                                                 v-model="email" required />
+                                            <!-- Add this within the modal body where you want to display the error -->
+                                            <div v-if="emailAlreadyExistsError" class="alert alert-danger" role="alert">
+                                                Email already exists.
+                                            </div>
                                             <div class="invalid-feedback">
                                                 This field must be filled.
                                             </div>
                                         </div>
+
                                         <br />
 
                                         <div class="second-modal-button">
@@ -246,17 +363,18 @@ export default {
                                 <p>Thank for contacting us,the admin will review your application and will get back to
                                     email and also download application in order to keep updating status.Thank You</p>
                             </div>
-                            <h4>Amount Payable</h4>
 
-                            <div class="distance-and-price">
 
+                            <h4 v-if="!isPublic">Amount Payable</h4>
+                            <div v-if="!isPublic" class="distance-and-price">
                                 <p v-if="price"><strong>Total Amount : PKR </strong>&nbsp;
                                     <span
-                                        style="font-weight: bold; font-size: xx-large; text-decoration: underline; font-weight: 800;">{{
-                                            price }}</span>
-
+                                        style="font-weight: bold; font-size: xx-large; text-decoration: underline; font-weight: 800;">
+                                        {{ price }}</span>
                                 </p>
                             </div>
+
+
 
                             <!-- QR code component -->
                             <qrcode-vue :value="downloadLink"></qrcode-vue>

@@ -4,6 +4,46 @@
 
         <div class="container-fluid bg-color">
             <h2 class="heading">BigWays Management System</h2>
+            <!-- .....Tab  code  here .  -->
+
+            <!-- <div class="container">
+                <div class="row">
+                    <div class="portfolio-button">
+                        <div class="portfolio-button-items">
+                            <router-link class="portfolio-button-item qodef--active" to="/private">
+                                <span class="portfolio-button-item-name">Private Car</span>
+                            </router-link>
+                            <router-link class="portfolio-button-item" to="/public">
+                                <span class="portfolio-button-item-name">Public Bus</span>
+                            </router-link>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            <!-- <div class="container">
+                <div class="row">
+                    <div class="portfolio-button">
+                        <div class="portfolio-button-items">
+                            <router-link class="portfolio-button-item"
+                                :class="{ 'qodef--active': isActive === 'private' }" to="/private"
+                                @click.native="setActive('private')">
+                                <span class="portfolio-button-item-name">Private Car</span>
+                            </router-link>
+                            <router-link class="portfolio-button-item"
+                                :class="{ 'qodef--active': isActive === 'public' }" to="/public"
+                                @click.native="setActive('public')">
+                                <span class="portfolio-button-item-name">Public Bus</span>
+                            </router-link>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+
+
+
+
+            <!-- .................  -->
             <div class="row">
                 <div class="col-md-6 first">
                     <h1 class="rate">Get Rate For School Ride </h1>
@@ -52,7 +92,7 @@
 
                             <!-- .............. -->
                             <div class="five">
-                                <p>Select Number of childs</p>
+                                <p>Select Number of Children</p>
                                 <div class="numeric-box" style="width: 150px;">
                                     <span class="negative-sign" @click="decrement1()">-</span>
                                     <span class="numeric-value" id="numericValue">1</span>
@@ -61,6 +101,7 @@
                             </div>
 
                             <br />
+
 
                             <div>
                                 <div class="custom-dropdown">
@@ -82,7 +123,7 @@
                                             Select subcategory of vehicle
                                         </option>
                                         <option v-for="vehicle in vehicles" :value="vehicle.id" :key="vehicle.id">
-                                            {{ vehicle.name }}
+                                            {{ vehicle.name }} &nbsp;/&nbsp; {{ vehicle.per_km }}
                                         </option>
                                     </select>
                                 </div>
@@ -91,6 +132,9 @@
 
                             <button type="submit" class="button btn btn-primary">Get
                                 Quote</button>
+                            <br>
+                            <br>
+
                             <p class="error-message">{{ errorMessage }}</p>
                         </form>
                     </div>
@@ -103,8 +147,10 @@
             <Model :origin="origin" :destination="destination" :cartype="cartype" :distance="distance"
                 :vehicleName="selectedVehicleName" :vehiclecharge="selectedVehiclecharge" :picup_latitude="latitude1"
                 :picup_longitude="longitude1" :drop_latitude="latitude2" :drop_longitude="longitude2"
-                :numericValue="numericValue" :vehicleType="vehicleType" />
+                :numericValue="numericValue" :vehicleType="vehicleType" :isPublic="false" />
+            <!-- <Public /> -->
         </div>
+        <router-view />
 
     </div>
 
@@ -117,6 +163,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import "../Style/Task.css";
 import Car from "../assets/Car.png";
 import Model from "./Model.vue";
+
 import MapWithMarker from './MapWithMarker.vue';
 import axios from 'axios'; // Import axios for making HTTP requests
 
@@ -127,7 +174,7 @@ export default {
 
     name: 'PlaceAutocomplete',
     name: 'VehicleSelection',
-
+    name: 'Task',
     setup() {
         const autocompleteInput = ref(null);
         const autocompleteInput2 = ref(null);
@@ -141,7 +188,7 @@ export default {
         const origin = ref('');
         const destination = ref('');
         const cartype = ref('');
-        const numericValue = ref(null);
+        const numericValue = ref(1);
         const errorMessage = ref('');
         // for auto detect current location code  
         const status = ref("");
@@ -189,7 +236,8 @@ export default {
                     console.log("Longitude:", longitude1);
 
                     // Update the origin property with the selected place name
-                    origin.value = place.name;
+                    // origin.value = place.name;
+                    origin.value = place.formatted_address;
                 }
                 console.log(place);
             });
@@ -204,14 +252,15 @@ export default {
                     longitude2.value = place2.geometry.location.lng();
                     console.log("Latitude:", latitude2);
                     console.log("Longitude:", longitude2);
-                    destination.value = place2.name;
-                    // destination.value = place2.formatted_address;
+                    // destination.value = place2.name;
+                    destination.value = place2.formatted_address;
                     // Check if latitude and longitude values are valid numbers
                     if (!isNaN(latitude2.value) && !isNaN(longitude2.value)) {
                         // Call the distance calculation function passing latitude1, longitude1, latitude2, and longitude2
                         distance.value = calculateDistance(latitude1.value, longitude1.value, latitude2.value, longitude2.value);
                         console.log("Distance:", distance.value + " km");
                     } else {
+
                         console.error("Invalid latitude or longitude values.");
                     }
 
@@ -301,7 +350,7 @@ export default {
             origin,
             destination,
             cartype,
-            numericValue: 1,
+            numericValue,
             errorMessage,
             showMapPopup: false,
             showmap, // Expose showmap in the return object
@@ -318,7 +367,8 @@ export default {
             selectedVehicleName,
             selectedVehiclecharge,
             fetchVehicles,
-            updateVehicleName
+            updateVehicleName,
+            isActive: 'private',
 
 
 
@@ -329,10 +379,14 @@ export default {
         Model,
         MapWithMarker,
 
-        // 'qrcode-vue': VueQrcode
     },
     methods: {
 
+        // active  code  here 
+        setActive(button) {
+            this.isActive = button;
+        },
+        // active  code end here 
         decrement1() {
             this.numericValue = this.numericValue - 1;
             if (this.numericValue <= 1) {
